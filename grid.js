@@ -1,9 +1,29 @@
 class Grid {
-    constructor(rowCount, colCount, cells) {
+    constructor(rowCount, colCount) {
         this.rowCount = rowCount;
         this.colCount = colCount;
         this.strokeWeight = 1;
-        this.cells = cells;
+        this.cells = [];
+        let cellWidth = width / (colCount + 1) < height / (rowCount + 1) ? width / (colCount + 1) : height / (rowCount + 1);
+        for (let row = 0; row < rowCount; row++) {
+            this.cells.push([]);
+            for (let col = 0; col < colCount; col++) {
+                this.cells[row].push(new Cell(cellWidth, random([CellStatus.DEAD, CellStatus.ALIVE])));
+            }
+        }
+    }
+
+    find(pos) {
+        for (let row = 0; row < this.rowCount; row++) {
+            for (let col = 0; col < this.colCount; col++) {
+                let cell = this.cells[row][col];
+                let r = cell.width / 2;
+                if (pos.x > cell.pos.x - r && pos.x < cell.pos.x + r &&
+                    pos.y > cell.pos.y - r && pos.y < cell.pos.y + r)
+                    return cell;
+            }
+        }
+        return undefined;
     }
 
     applyNeighbours() {

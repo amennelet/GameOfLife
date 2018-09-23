@@ -39,14 +39,16 @@ class Cell {
                 nextStatus = CellStatus.DEAD;
         } else if (nextStatus === CellStatus.DEAD) {
             if (aliveNeighbours == 3)
-                nextStatus = CellStatus.ALIVE;
+                nextStatus = CellStatus.BORN;
         }
         return new Cell(this.width, nextStatus);
     }
 
     draw(pos) {
+        if (pos)
+            this.pos = pos;
         push();
-        translate(pos.x, pos.y);
+        translate(this.pos.x, this.pos.y);
         ellipseMode(CENTER);
         noStroke();
         switch (this.cellStatus) {
